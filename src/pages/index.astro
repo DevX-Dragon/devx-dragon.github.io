@@ -23,29 +23,15 @@ const commitHash = import.meta.env.PUBLIC_COMMIT_HASH || 'dev-local';
 const buildDate = new Date().toISOString().split('T')[0];
 
 // Current status — edit this line to update your live badge
-const CURRENT_STATUS = "Currently: soldering a new PCB ⚡";
+const CURRENT_STATUS = "Working on a new SoC Keyboard ⚡";
 
 const WORKBENCH_TOOLS = [
   {
-    name: 'KiCad 8',
+    name: 'KiCad 9',
     category: 'EDA',
     desc: 'PCB design. Every trace by hand. No autorouter (skill issue).',
     color: '#00FFE7',
     icon: '◈',
-  },
-  {
-    name: 'ESP32-WROOM',
-    category: 'MCU',
-    desc: 'Wi-Fi + Bluetooth + dual-core Xtensa. My go-to brain for everything.',
-    color: '#FFE600',
-    icon: '⬡',
-  },
-  {
-    name: 'THT Components',
-    category: 'Components',
-    desc: 'Through-hole only. DIP ICs, axial resistors, radial caps. Old school.',
-    color: '#ffffff',
-    icon: '▣',
   },
   {
     name: 'Hakko FX-888D',
@@ -60,13 +46,6 @@ const WORKBENCH_TOOLS = [
     desc: 'Started on Arduino, migrated to PlatformIO. Way better dependency management.',
     color: '#FFE600',
     icon: '▷',
-  },
-  {
-    name: 'Oscilloscope (DSO138)',
-    category: 'Debug',
-    desc: 'A kit scope I built from scratch. Not amazing but it is MINE.',
-    color: '#ffffff',
-    icon: '≈',
   },
 ];
 ---
@@ -168,7 +147,7 @@ const WORKBENCH_TOOLS = [
           </div>
           <div class="flex gap-2">
             <span class="text-[#444] w-16 shrink-0">FOCUS</span>
-            <span class="text-[#00FFE7]">HW + SW</span>
+            <span class="text-[#00FFE7]"></span>
           </div>
           <div class="flex gap-2">
             <span class="text-[#444] w-16 shrink-0">GITHUB</span>
