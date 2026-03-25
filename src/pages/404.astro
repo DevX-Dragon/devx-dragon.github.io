@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 — DevX-Dragon">
+  <main class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
+    <div
+      class="border-2 border-[#1a1a1a] p-10 max-w-md relative"
+      style="border-color: rgba(0,255,231,0.3); box-shadow: 0 0 40px rgba(0,255,231,0.05);"
+    >
+      <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#00FFE7]"></div>
+      <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#00FFE7]"></div>
+
+      <div class="font-mono text-xs text-[#00FFE7] uppercase tracking-widest mb-3">// ERROR 404</div>
+      <h1 class="font-grotesk font-black text-white text-6xl mb-4">404<span class="text-[#00FFE7]">.</span></h1>
+      <p class="font-mono text-sm text-[#666] mb-6">
+        This page doesn't exist. I probably didn't build it yet.
+        Or I broke the routing again. Both equally likely.
+      </p>
+      <a href="/" class="btn-lab">← Back to the lab</a>
+    </div>
+  </main>
+</Layout>

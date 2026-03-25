@@ -1,0 +1,283 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectGallery from '../components/ProjectGallery.jsx';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => {
+  // Featured first, then by date descending
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  if (a.data.date && b.data.date) return new Date(b.data.date) - new Date(a.data.date);
+  return 0;
+});
+
+const serializedProjects = sortedProjects.map((p) => ({
+  slug: p.slug,
+  body: p.body,
+  data: p.data,
+}));
+
+// Build version — injected by CI or fallback
+const commitHash = import.meta.env.PUBLIC_COMMIT_HASH || 'dev-local';
+const buildDate = new Date().toISOString().split('T')[0];
+
+// Current status — edit this line to update your live badge
+const CURRENT_STATUS = "Currently: soldering a new PCB ⚡";
+
+const WORKBENCH_TOOLS = [
+  {
+    name: 'KiCad 8',
+    category: 'EDA',
+    desc: 'PCB design. Every trace by hand. No autorouter (skill issue).',
+    color: '#00FFE7',
+    icon: '◈',
+  },
+  {
+    name: 'ESP32-WROOM',
+    category: 'MCU',
+    desc: 'Wi-Fi + Bluetooth + dual-core Xtensa. My go-to brain for everything.',
+    color: '#FFE600',
+    icon: '⬡',
+  },
+  {
+    name: 'THT Components',
+    category: 'Components',
+    desc: 'Through-hole only. DIP ICs, axial resistors, radial caps. Old school.',
+    color: '#ffffff',
+    icon: '▣',
+  },
+  {
+    name: 'Hakko FX-888D',
+    category: 'Soldering',
+    desc: '350°C on leaded solder. I know, I know. Flux is mandatory.',
+    color: '#00FFE7',
+    icon: '⚡',
+  },
+  {
+    name: 'Arduino IDE / PlatformIO',
+    category: 'Firmware',
+    desc: 'Started on Arduino, migrated to PlatformIO. Way better dependency management.',
+    color: '#FFE600',
+    icon: '▷',
+  },
+  {
+    name: 'Oscilloscope (DSO138)',
+    category: 'Debug',
+    desc: 'A kit scope I built from scratch. Not amazing but it is MINE.',
+    color: '#ffffff',
+    icon: '≈',
+  },
+];
+---
+
+<Layout>
+  <!-- ═══════════════════════════════════ HERO / HEADER ═══ -->
+  <header class="relative min-h-screen flex flex-col justify-between px-4 sm:px-8 pt-8 pb-10 overflow-hidden border-b-2 border-[#1a1a1a]">
+    <!-- Grid background -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background-image: linear-gradient(rgba(0,255,231,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,231,0.03) 1px, transparent 1px); background-size: 40px 40px;"
+    ></div>
+
+    <!-- Top nav bar -->
+    <nav class="relative z-10 flex items-center justify-between max-w-6xl mx-auto w-full">
+      <span class="font-mono text-sm font-bold text-[#00FFE7] tracking-widest uppercase">
+        DevX-Dragon<span class="animate-blink">_</span>
+      </span>
+      <div class="flex items-center gap-3 sm:gap-5">
+        <a href="#projects" class="font-mono text-xs text-[#666] hover:text-[#00FFE7] uppercase tracking-widest transition-colors">Projects</a>
+        <a href="#workbench" class="font-mono text-xs text-[#666] hover:text-[#00FFE7] uppercase tracking-widest transition-colors">Workbench</a>
+        <a
+          href="https://github.com/DevX-Dragon"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-lab text-xs py-1.5 px-3"
+        >
+          GitHub →
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero content -->
+    <div class="relative z-10 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-start sm:items-end gap-10 mt-16 sm:mt-0">
+
+      <!-- Left: big type -->
+      <div class="flex-1">
+        <!-- Status badge -->
+        <div class="inline-flex items-center gap-2 border border-[#00FFE7] px-3 py-1.5 mb-6">
+          <span class="w-2 h-2 rounded-full bg-[#00FFE7] animate-pulse-slow inline-block"></span>
+          <span class="font-mono text-xs text-[#00FFE7] font-bold">{CURRENT_STATUS}</span>
+        </div>
+
+        <h1 class="font-grotesk font-black leading-none text-white mb-4" style="font-size: clamp(3rem, 10vw, 7.5rem);">
+          HARDWARE<br />
+          <span style="color: #00FFE7; text-shadow: 0 0 40px rgba(0,255,231,0.5);">+SOFTWARE</span><br />
+          DEV<span style="color: #FFE600;">.</span>
+        </h1>
+
+        <p class="font-mono text-sm sm:text-base text-[#888] max-w-lg leading-relaxed mb-8">
+          I'm 14. I build stuff — PCBs, firmware, web tools, whatever.
+          If it blinks, beeps, or crashes my browser, I probably made it.
+          Everything here is real, open-source, and probably still has bugs.
+        </p>
+
+        <div class="flex gap-3 flex-wrap">
+          <a href="#projects" class="btn-lab">
+            See my builds →
+          </a>
+          <a
+            href="https://github.com/DevX-Dragon"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs uppercase tracking-widest px-4 py-2.5 border-2 border-[#222] text-[#666] hover:border-[#333] hover:text-[#aaa] transition-all duration-150 flex items-center gap-2"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.83-.26.83-.58v-2.02c-3.34.73-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.3.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.004 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            @DevX-Dragon
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: about card -->
+      <div class="sm:w-72 border-2 border-[#1a1a1a] bg-[#0d0d0d] p-5 relative">
+        <!-- Corner accents -->
+        <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#00FFE7]"></div>
+        <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#00FFE7]"></div>
+
+        <div class="font-mono text-[0.6rem] text-[#00FFE7] uppercase tracking-widest mb-3">// ABOUT.TXT</div>
+
+        <!-- Photo placeholder -->
+        <div class="w-16 h-16 border-2 border-[#222] mb-4 bg-[#111] flex items-center justify-center overflow-hidden">
+          <img
+            src="/photo.jpg"
+            alt="DevX-Dragon"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+          />
+          <span class="font-mono text-3xl text-[#333] hidden items-center justify-center w-full h-full">D</span>
+        </div>
+
+        <div class="space-y-2 font-mono text-xs">
+          <div class="flex gap-2">
+            <span class="text-[#444] w-16 shrink-0">NAME</span>
+            <span class="text-white">DevX-Dragon</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-[#444] w-16 shrink-0">AGE</span>
+            <span class="text-white">14</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-[#444] w-16 shrink-0">FOCUS</span>
+            <span class="text-[#00FFE7]">HW + SW</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-[#444] w-16 shrink-0">GITHUB</span>
+            <a href="https://github.com/DevX-Dragon" target="_blank" rel="noopener noreferrer" class="text-[#00FFE7] hover:underline truncate">DevX-Dragon</a>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-[#444] w-16 shrink-0">IG</span>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-[#FFE600] hover:underline truncate">@devx_dragon</a>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-[#1a1a1a]">
+          <div class="font-mono text-[0.6rem] text-[#444] uppercase tracking-widest mb-1">STATUS</div>
+          <div class="font-mono text-xs text-[#00FFE7] flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#00FFE7] animate-pulse-slow inline-block"></span>
+            {CURRENT_STATUS}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="relative z-10 max-w-6xl mx-auto w-full flex justify-end">
+      <span class="font-mono text-[0.6rem] text-[#333] uppercase tracking-widest animate-bounce">scroll ↓</span>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════ PROJECT GALLERY ═══ -->
+  <ProjectGallery
+    projects={serializedProjects}
+    client:load
+  />
+
+
+  <!-- ═══════════════════════════════════════════ WORKBENCH ═══ -->
+  <section id="workbench" class="py-20 px-4 sm:px-8 border-t-2 border-[#1a1a1a]">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-12">
+        <span class="font-mono text-xs text-[#FFE600] uppercase tracking-widest mb-2 block">// TOOLS OF THE TRADE</span>
+        <h2 class="font-grotesk font-black text-white leading-none" style="font-size: clamp(2.5rem, 7vw, 5rem);">
+          WORK<span class="text-[#FFE600]">BENCH</span><span class="text-[#333]">.</span>
+        </h2>
+        <p class="font-mono text-sm text-[#666] mt-3 max-w-xl">
+          This is what my actual setup looks like. The desk has flux burns and the floor has snipped component leads. Don't look too closely.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {WORKBENCH_TOOLS.map((tool) => (
+          <div class="group border-2 border-[#1a1a1a] hover:border-[#2a2a2a] bg-[#0d0d0d] p-5 transition-all duration-200 relative overflow-hidden">
+            <!-- Top stripe -->
+            <div class="absolute top-0 left-0 right-0 h-0.5 transition-all duration-200 opacity-0 group-hover:opacity-100"
+              style={`background: ${tool.color};`}></div>
+
+            <div class="flex items-start gap-3 mb-3">
+              <span class="font-mono text-2xl leading-none" style={`color: ${tool.color};`}>{tool.icon}</span>
+              <div>
+                <div class="font-mono text-[0.6rem] uppercase tracking-widest mb-0.5" style={`color: ${tool.color};`}>
+                  {tool.category}
+                </div>
+                <div class="font-grotesk text-base font-bold text-white">{tool.name}</div>
+              </div>
+            </div>
+            <p class="font-mono text-xs text-[#666] leading-relaxed">{tool.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- THT note -->
+      <div class="mt-8 border-l-2 border-[#FFE600] pl-4">
+        <p class="font-mono text-xs text-[#777] leading-relaxed max-w-2xl">
+          <span class="text-[#FFE600]">Note on THT:</span> I use through-hole components by default — not because I can't do SMD,
+          but because I like seeing what I'm building. Big resistors, big capacitors, proper DIP packages.
+          It's slower, takes more board space, and I don't care.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ FOOTER ═══ -->
+  <footer class="border-t-2 border-[#111] px-4 sm:px-8 py-8">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+
+      <div>
+        <div class="font-mono text-xs text-[#444] uppercase tracking-widest mb-1">// LATEST BUILD</div>
+        <div class="font-mono text-xs text-[#666] flex items-center gap-3 flex-wrap">
+          <span>
+            commit
+            <span id="commit-hash" class="text-[#00FFE7] ml-1">{commitHash}</span>
+          </span>
+          <span class="text-[#333]">·</span>
+          <span>{buildDate}</span>
+          <span class="text-[#333]">·</span>
+          <span class="text-[#444]">deployed on GitHub Pages</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/DevX-Dragon" target="_blank" rel="noopener noreferrer"
+          class="font-mono text-xs text-[#444] hover:text-[#00FFE7] uppercase tracking-widest transition-colors">
+          GitHub
+        </a>
+        <a href="#" class="font-mono text-xs text-[#444] hover:text-[#FFE600] uppercase tracking-widest transition-colors">
+          Instagram
+        </a>
+        <span class="font-mono text-xs text-[#2a2a2a]">built by DevX-Dragon</span>
+      </div>
+    </div>
+  </footer>
+</Layout>

@@ -1,0 +1,177 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'DevX-Dragon — Digital Laboratory',
+  description = 'Hardware + Software dev. 14. Building things that blink, beep, and sometimes catch fire.',
+} = Astro.props;
+
+// Git commit hash injected at build time via environment variable
+// Set this in your GitHub Actions workflow:
+// echo "PUBLIC_COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+const commitHash = import.meta.env.PUBLIC_COMMIT_HASH || 'dev-local';
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#080808" />
+    <title>{title}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts: Space Grotesk + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+
+  <body
+    class="bg-lab-black text-white font-grotesk min-h-screen overflow-x-hidden"
+    data-commit={commitHash}
+  >
+    <!-- Scanline overlay -->
+    <div
+      class="pointer-events-none fixed inset-0 z-50 opacity-[0.03]"
+      style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);"
+    ></div>
+
+    <!-- Noise texture overlay -->
+    <div
+      class="pointer-events-none fixed inset-0 z-40 opacity-[0.015]"
+      style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"n\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.75\" numOctaves=\"4\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23n)\" opacity=\"1\"/%3E%3C/svg%3E');"
+    ></div>
+
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background: #00FFE7;
+    color: #080808;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #111;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #00FFE7;
+  }
+
+  .neon-text-cyan {
+    color: #00FFE7;
+    text-shadow: 0 0 20px rgba(0, 255, 231, 0.6);
+  }
+
+  .neon-text-yellow {
+    color: #FFE600;
+    text-shadow: 0 0 20px rgba(255, 230, 0, 0.6);
+  }
+
+  .border-neon-cyan {
+    border-color: #00FFE7;
+    box-shadow: 0 0 12px rgba(0, 255, 231, 0.3);
+  }
+
+  .btn-lab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 2px solid #00FFE7;
+    color: #00FFE7;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-lab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #00FFE7;
+    transform: translateX(-101%);
+    transition: transform 0.15s ease;
+    z-index: -1;
+  }
+
+  .btn-lab:hover {
+    color: #080808;
+    box-shadow: 4px 4px 0px #00FFE7;
+    transform: translate(-2px, -2px);
+  }
+
+  .btn-lab:hover::before {
+    transform: translateX(0);
+  }
+
+  .btn-lab:active {
+    transform: translate(0px, 0px);
+    box-shadow: none;
+  }
+
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    user-select: none;
+  }
+
+  .tag-pill.Hardware  { border-color: #00FFE7; color: #00FFE7; }
+  .tag-pill.Software  { border-color: #FFE600; color: #FFE600; }
+  .tag-pill.IRL       { border-color: #ffffff; color: #ffffff; }
+
+  .tag-pill.active.Hardware  { background: #00FFE7; color: #080808; box-shadow: 0 0 12px rgba(0,255,231,0.4); }
+  .tag-pill.active.Software  { background: #FFE600; color: #080808; box-shadow: 0 0 12px rgba(255,230,0,0.4); }
+  .tag-pill.active.IRL       { background: #ffffff; color: #080808; }
+
+  .tag-pill:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Grid lines background */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(0,255,231,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,231,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+</style>
