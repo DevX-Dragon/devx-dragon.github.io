@@ -1,0 +1,74 @@
+[
+  {
+    "id": "p1",
+    "title": "Emberflow",
+    "tagline": "Real-time collaborative editor with CRDT sync",
+    "description": "A Notion-style block editor where every keystroke syncs across clients in under 80ms using a custom CRDT engine. Handles offline edits, conflict-free merges, and presence cursors for up to 40 concurrent editors per document.",
+    "tags": ["React", "TypeScript", "Full-Stack"],
+    "stack": ["React", "TypeScript", "Node.js", "WebSockets", "Redis"],
+    "github": "https://github.com/DevX-Dragon/emberflow",
+    "demo": "https://emberflow-demo.vercel.app",
+    "featured": true,
+    "year": 2025
+  },
+  {
+    "id": "p2",
+    "title": "Hoard",
+    "tagline": "Self-hosted bookmark manager with full-text search",
+    "description": "A privacy-first bookmark manager that indexes full page content locally using SQLite FTS5. Ships as a single binary, imports from every major browser, and includes a tagging system with saved smart-searches.",
+    "tags": ["TypeScript", "Full-Stack"],
+    "stack": ["TypeScript", "SQLite", "Fastify", "React"],
+    "github": "https://github.com/DevX-Dragon/hoard",
+    "demo": "https://hoard-app.dev",
+    "featured": true,
+    "year": 2025
+  },
+  {
+    "id": "p3",
+    "title": "cli-forge",
+    "tagline": "Zero-config scaffolding tool for CLI tools in Node",
+    "description": "Generate a fully typed Node CLI with subcommands, auto-generated help text, and shell-completion scripts in under 10 seconds. Used by three open-source projects with a combined 40k weekly downloads.",
+    "tags": ["TypeScript", "Utilities"],
+    "stack": ["TypeScript", "Node.js", "Commander.js"],
+    "github": "https://github.com/DevX-Dragon/cli-forge",
+    "demo": "",
+    "featured": false,
+    "year": 2024
+  },
+  {
+    "id": "p4",
+    "title": "Pixel Pantry",
+    "tagline": "Recipe tracker with pantry-aware suggestions",
+    "description": "Tracks what's actually in your fridge and suggests recipes that use ingredients before they expire. Includes barcode scanning via device camera and a shareable weekly meal plan.",
+    "tags": ["React", "Full-Stack"],
+    "stack": ["React", "Supabase", "Tailwind CSS"],
+    "github": "https://github.com/DevX-Dragon/pixel-pantry",
+    "demo": "https://pixelpantry.app",
+    "featured": false,
+    "year": 2024
+  },
+  {
+    "id": "p5",
+    "title": "diffscope",
+    "tagline": "Terminal UI for reviewing large git diffs",
+    "description": "A fast, keyboard-driven TUI for reviewing pull requests without leaving the terminal. Syntax-highlights diffs, supports inline comments synced back to GitHub, and renders 10k-line diffs without lag.",
+    "tags": ["TypeScript", "Utilities"],
+    "stack": ["TypeScript", "Node.js", "Ink"],
+    "github": "https://github.com/DevX-Dragon/diffscope",
+    "demo": "",
+    "featured": false,
+    "year": 2023
+  },
+  {
+    "id": "p6",
+    "title": "Loopwatch",
+    "tagline": "Visual regression testing for design systems",
+    "description": "Captures component screenshots across breakpoints on every commit and flags visual diffs before they ship. Integrates with GitHub Actions and posts annotated diff images directly on pull requests.",
+    "tags": ["React", "TypeScript", "Full-Stack"],
+    "stack": ["React", "Playwright", "TypeScript", "Node.js"],
+    "github": "https://github.com/DevX-Dragon/loopwatch",
+    "demo": "https://loopwatch.dev",
+    "featured": true,
+    "year": 2023
+  }
+]
